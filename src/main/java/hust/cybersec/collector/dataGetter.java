@@ -13,7 +13,7 @@ import java.net.http.HttpResponse;
 import org.json.JSONObject;
 
 public class dataGetter {
-    static void retrieveData(String url, String filename) throws IOException {
+    public static void retrieveData(String url, String filename) throws IOException {
         HttpRequest request = HttpRequest.newBuilder()
                 .uri(URI.create(url))
                 .GET()
@@ -54,13 +54,13 @@ public class dataGetter {
         }
     }
 
-//
+
 //    public static void main(String[] args) {
-////        FORM:
-////        try {
-////            retrieveData("https://api.github.com/repos/redcanaryco/atomic-red-team/contents/atomics/Indexes/index.yaml", "index.yaml");
-////        } catch (IOException e) {
-////            e.printStackTrace();
-////        }
+//        FORM:
+//        try {
+//            retrieveData("https://api.github.com/repos/redcanaryco/atomic-red-team/contents/atomics/Indexes/index.yaml", "index.yaml");
+//        } catch (IOException e) {
+//            e.printStackTrace();
+//        }
 //    }
 }

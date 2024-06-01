@@ -1,7 +1,9 @@
 package hust.cybersec.model;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
-import java.net.URISyntaxException;
+import hust.cybersec.collector.dataGetter;
+
+import java.io.IOException;
 
 
 /**
@@ -137,10 +139,4 @@ public class AtomicRedTeam extends MitreAttackFramework {
     public String[] getTestDependencies() {
         return testDependencies;
     }
-
-    /**
-     * Downloads Atomic Red Team data.
-     *
-     * @throws URISyntaxException If there is an error in the URI syntax.
-     */
-}
+    }

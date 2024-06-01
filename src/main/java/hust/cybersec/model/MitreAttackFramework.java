@@ -3,13 +3,17 @@ package hust.cybersec.model;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
+import hust.cybersec.collector.dataGetter;
+
+import java.io.IOException;
+import java.net.URISyntaxException;
 
 /**
  * Represents the Mitre Attack Framework class.
  */
 @JsonDeserialize(using = Deserializer.class)
 @JsonIgnoreProperties(ignoreUnknown = true)
-public class MitreAttackFramework {
+public abstract class MitreAttackFramework {
     private String techniqueId;
 
     @JsonProperty("name")
@@ -145,6 +149,7 @@ public class MitreAttackFramework {
     public boolean isTechniqueIsSubtechnique() {
         return techniqueIsSubtechnique;
     }
-}
+    }
+
 
 

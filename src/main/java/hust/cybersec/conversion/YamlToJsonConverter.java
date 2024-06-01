@@ -79,4 +79,21 @@ public class YamlToJsonConverter {
             jsonMapper.writerWithDefaultPrettyPrinter().writeValue(bufferedOut, json);
         }
     }
+    private void convert() {
+        System.out.println("Converting index.yaml to index.json");
+
+        try {
+            byte[] yamlBytes = readYamlFile();
+            Object json = convertYamlToJson(yamlBytes);
+            writeJsonToFile(json);
+        } catch (IOException e) {
+            System.err.println("An error occurred during YAML to JSON conversion.");
+        }
+    }
+
+    public static void main(String[] args) throws IOException {
+
+    }
 }
+
+

@@ -139,4 +139,5 @@ public class AtomicRedTeam extends MitreAttackFramework {
     public String[] getTestDependencies() {
         return testDependencies;
     }
+
     }

@@ -2,6 +2,7 @@ package hust.cybersec.model;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
 import hust.cybersec.collector.dataGetter;
+import hust.cybersec.conversion.YamlToJsonConverter;
 
 import java.net.URISyntaxException;
 
@@ -163,7 +164,11 @@ public class AtomicRedTeam extends MitreAttackFramework {
             }
         }
 
+        String YAML_FILE_PATH = "src/main/java/hust/cybersec/data/index.yaml";
+        String JSON_FILE_PATH = "src/main/java/hust/cybersec/data/index.json";
 
+        YamlToJsonConverter converter = new YamlToJsonConverter(YAML_FILE_PATH, JSON_FILE_PATH);
+        converter.convert();
 
     }
 }

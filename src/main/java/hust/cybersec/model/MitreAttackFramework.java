@@ -5,7 +5,6 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
 import hust.cybersec.collector.dataGetter;
 
-import java.io.IOException;
 import java.net.URISyntaxException;
 
 /**
@@ -13,7 +12,7 @@ import java.net.URISyntaxException;
  */
 @JsonDeserialize(using = Deserializer.class)
 @JsonIgnoreProperties(ignoreUnknown = true)
-public abstract class MitreAttackFramework {
+public class MitreAttackFramework {
     private String techniqueId;
 
     @JsonProperty("name")
@@ -146,10 +145,23 @@ public abstract class MitreAttackFramework {
      *
      * @return True if the technique is a subtechnique, false otherwise.
      */
-    public boolean isTechniqueIsSubtechnique() {
-        return techniqueIsSubtechnique;
-    }
+    public void download() throws URISyntaxException {
+        final String ATOMIC_URL = "https://api.github.com/repos/redcanaryco/atomic-red-team/contents/atomics/Indexes/index.yaml";
+        final String NAME_FILE = "index.yaml";
+        dataGetter atomicRetriever = new dataGetter(ATOMIC_URL, NAME_FILE);
+
+        try {
+            atomicRetriever.retrieveData();
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
     }
 
+
+
+        public boolean isTechniqueIsSubtechnique() {
+        return techniqueIsSubtechnique;
+    }
+}
 
 

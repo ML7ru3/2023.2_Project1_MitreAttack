@@ -13,9 +13,18 @@ import java.net.http.HttpResponse;
 import org.json.JSONObject;
 
 public class dataGetter {
-    public static void retrieveData(String url, String filename) throws IOException {
+
+    private String URL;
+    private String filename;
+
+    public dataGetter(String URL, String filename){
+        this.URL = URL;
+        this.filename = filename;
+    }
+
+    public void retrieveData() throws IOException {
         HttpRequest request = HttpRequest.newBuilder()
-                .uri(URI.create(url))
+                .uri(URI.create(URL))
                 .GET()
                 .build();
         HttpClient client = HttpClient.newBuilder()
@@ -28,7 +37,7 @@ public class dataGetter {
                 JSONObject jsonObject = new JSONObject(responseBody);
                 String downloadUrl = jsonObject.getString("download_url");
                 try {
-                    downloadData(downloadUrl, filename);
+                    downloadData(downloadUrl);
                 } catch (IOException e) {
                     System.err.println("oh no");
                 }
@@ -41,9 +50,15 @@ public class dataGetter {
         }
     }
 
-    static void downloadData(String downloadUrl, String filename) throws IOException {
+    public void downloadData(String downloadUrl) throws IOException {
+        String directoryPath = "src/main/java/hust/cybersec/data/";
+        if (!directoryPath.endsWith("/") && !directoryPath.endsWith("\\")) {
+            directoryPath += System.getProperty("file.separator");
+        }
+
+
         try (BufferedInputStream in = new BufferedInputStream(new URL(downloadUrl).openStream());
-             FileOutputStream fileOutputStream = new FileOutputStream(filename)) {
+             FileOutputStream fileOutputStream = new FileOutputStream(directoryPath + filename)) {
             byte dataBuffer[] = new byte[1024];
             int bytesRead;
             while ((bytesRead = in.read(dataBuffer, 0, 1024)) != -1) {
@@ -56,11 +71,31 @@ public class dataGetter {
 
 
 //    public static void main(String[] args) {
-//        FORM:
+//        final String[] MITRE_URL = {"https://api.github.com/repos/mitre-attack/attack-stix-data/contents/enterprise-attack/enterprise-attack.json",
+//                "https://api.github.com/repos/mitre-attack/attack-stix-data/contents/ics-attack/ics-attack.json",
+//                "https://api.github.com/repos/mitre-attack/attack-stix-data/contents/mobile-attack/mobile-attack.json"};
+//        final String[] NAME_FILE = {"enterprise-attack.json",
+//                "ics-attack.json",
+//                "mobile-attack.json"};
+//
+//        for (int i = 0; i < 3; i++){
+//            dataGetter mitreRetriever = new dataGetter(MITRE_URL[i], NAME_FILE[i]);
+//            try {
+//                mitreRetriever.retrieveData();
+//            } catch( Exception e){
+//                e.printStackTrace();
+//            }
+//        }
+//
+//        final String ATOMIC_URL = "https://api.github.com/repos/redcanaryco/atomic-red-team/contents/atomics/Indexes/index.yaml";
+//        final String NAME_FILE = "index.yaml";
+//        dataGetter atomicRetriever = new dataGetter(ATOMIC_URL, NAME_FILE);
+//
 //        try {
-//            retrieveData("https://api.github.com/repos/redcanaryco/atomic-red-team/contents/atomics/Indexes/index.yaml", "index.yaml");
-//        } catch (IOException e) {
+//            atomicRetriever.retrieveData();
+//        } catch (Exception e) {
 //            e.printStackTrace();
 //        }
+//
 //    }
 }

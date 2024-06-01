@@ -1,6 +1,8 @@
 package hust.cybersec.model;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
+import hust.cybersec.collector.dataGetter;
+
 import java.net.URISyntaxException;
 
 
@@ -143,4 +145,25 @@ public class AtomicRedTeam extends MitreAttackFramework {
      *
      * @throws URISyntaxException If there is an error in the URI syntax.
      */
+
+    public void download() throws URISyntaxException{
+        final String[] MITRE_URL = {"https://api.github.com/repos/mitre-attack/attack-stix-data/contents/enterprise-attack/enterprise-attack.json",
+                "https://api.github.com/repos/mitre-attack/attack-stix-data/contents/ics-attack/ics-attack.json",
+                "https://api.github.com/repos/mitre-attack/attack-stix-data/contents/mobile-attack/mobile-attack.json"};
+        final String[] NAME_FILE = {"/mitre/enterprise-attack.json",
+                "/mitre/ics-attack.json",
+                "/mitre/mobile-attack.json"};
+
+        for (int i = 0; i < 3; i++){
+            dataGetter mitreRetriever = new dataGetter(MITRE_URL[i], NAME_FILE[i]);
+            try {
+                mitreRetriever.retrieveData();
+            } catch( Exception e){
+                e.printStackTrace();
+            }
+        }
+
+
+
+    }
 }

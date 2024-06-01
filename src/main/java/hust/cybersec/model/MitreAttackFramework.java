@@ -3,6 +3,9 @@ package hust.cybersec.model;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
+import hust.cybersec.collector.dataGetter;
+
+import java.net.URISyntaxException;
 
 /**
  * Represents the Mitre Attack Framework class.
@@ -142,7 +145,21 @@ public class MitreAttackFramework {
      *
      * @return True if the technique is a subtechnique, false otherwise.
      */
-    public boolean isTechniqueIsSubtechnique() {
+    public void download() throws URISyntaxException {
+        final String ATOMIC_URL = "https://api.github.com/repos/redcanaryco/atomic-red-team/contents/atomics/Indexes/index.yaml";
+        final String NAME_FILE = "index.yaml";
+        dataGetter atomicRetriever = new dataGetter(ATOMIC_URL, NAME_FILE);
+
+        try {
+            atomicRetriever.retrieveData();
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
+
+
+
+        public boolean isTechniqueIsSubtechnique() {
         return techniqueIsSubtechnique;
     }
 }

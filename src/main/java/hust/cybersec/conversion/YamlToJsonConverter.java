@@ -79,7 +79,7 @@ public class YamlToJsonConverter {
             jsonMapper.writerWithDefaultPrettyPrinter().writeValue(bufferedOut, json);
         }
     }
-    private void convert() {
+    public void convert() {
         System.out.println("Converting index.yaml to index.json");
 
         try {

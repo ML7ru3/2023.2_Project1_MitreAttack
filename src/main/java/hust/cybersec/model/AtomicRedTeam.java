@@ -3,9 +3,10 @@ package hust.cybersec.model;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import hust.cybersec.collector.dataGetter;
 import hust.cybersec.conversion.YamlToJsonConverter;
+import hust.cybersec.excelexporter.JsonToExcelConverter;
 
+import java.io.IOException;
 import java.net.URISyntaxException;
-
 
 /**
  * Represents the Atomic Red Team class, extending the MitreAttackFramework.
@@ -100,13 +101,13 @@ public class AtomicRedTeam extends MitreAttackFramework {
         this.testDependencies = testDependencies;
     }
 
-    // Setter and  Getter
-    public void setTestNumber(int testNumber) {
-        this.testNumber = testNumber;
-    }
-
+    // Getters and Setters
     public int getTestNumber() {
         return testNumber;
+    }
+
+    public void setTestNumber(int testNumber) {
+        this.testNumber = testNumber;
     }
 
     public String getTestName() {
@@ -146,29 +147,34 @@ public class AtomicRedTeam extends MitreAttackFramework {
      *
      * @throws URISyntaxException If there is an error in the URI syntax.
      */
+//    @Override
+//    public void downloadData() throws URISyntaxException {
+//        final String ATOMIC_URL = "https://raw.githubusercontent.com/redcanaryco/atomic-red-team/master/atomics/Indexes/";
+//        final String ATOMIC_DIRECTORY = "./data/atomic";
+//        final String[] ATOMIC_FILES = {"index.yaml"};
+//
+//        dataGetter atomicDownloader = new dataGetter(ATOMIC_URL, ATOMIC_DIRECTORY);
+//        atomicDownloader.downloadData("atomic-all.yaml");
+//
+//        final String YAML_FILE_PATH = "./data/atomic/atomic-all.yaml";
+//        final String JSON_FILE_PATH = "./data/atomic/atomic-all.json";
+//
+//        YamlToJsonConverter converter = new YamlToJsonConverter(YAML_FILE_PATH, JSON_FILE_PATH);
+//        converter.convert();
+//    }
 
-    public void download() throws URISyntaxException{
-        final String[] MITRE_URL = {"https://api.github.com/repos/mitre-attack/attack-stix-data/contents/enterprise-attack/enterprise-attack.json",
-                "https://api.github.com/repos/mitre-attack/attack-stix-data/contents/ics-attack/ics-attack.json",
-                "https://api.github.com/repos/mitre-attack/attack-stix-data/contents/mobile-attack/mobile-attack.json"};
-        final String[] NAME_FILE = {"enterprise-attack.json",
-                "ics-attack.json",
-                "mobile-attack.json"};
-
-        for (int i = 0; i < 3; i++){
-            dataGetter mitreRetriever = new dataGetter(MITRE_URL[i], NAME_FILE[i]);
-            try {
-                mitreRetriever.retrieveData();
-            } catch( Exception e){
-                e.printStackTrace();
-            }
-        }
-
-        String YAML_FILE_PATH = "src/main/java/hust/cybersec/data/index.yaml";
-        String JSON_FILE_PATH = "src/main/java/hust/cybersec/data/index.json";
-
-        YamlToJsonConverter converter = new YamlToJsonConverter(YAML_FILE_PATH, JSON_FILE_PATH);
-        converter.convert();
-
+    /**
+     * Exports Atomic Red Team data to an Excel file.
+     *
+     * @throws IOException If there is an I/O error.
+     */
+    public void exportExcel() throws IOException {
+        final String JSON_FILE_PATH = "./data/atomic/atomic-all.json";
+        final String EXCEL_FILE_PATH = "./data/atomic/atomic-all.xlsx";
+        JsonToExcelConverter exporter = new JsonToExcelConverter(JSON_FILE_PATH, EXCEL_FILE_PATH);
+        exporter.export();
     }
+
+
+
 }

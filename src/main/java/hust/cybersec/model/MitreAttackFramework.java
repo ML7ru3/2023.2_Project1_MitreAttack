@@ -41,9 +41,7 @@ public class MitreAttackFramework {
     /**
      * Default constructor for the MitreAttackFramework class.
      */
-    public MitreAttackFramework() {
-
-    }
+    public MitreAttackFramework() {}
 
     /**
      * Constructor for the MitreAttackFramework class.
@@ -72,103 +70,93 @@ public class MitreAttackFramework {
         this.techniqueIsSubtechnique = techniqueIsSubtechnique;
     }
 
-    // Getter and Setter
+    // Getters and Setters
     public String getTechniqueId() {
         return techniqueId;
-    }
-
-    public String getTechniqueName() {
-        return techniqueName;
     }
 
     public void setTechniqueId(String techniqueId) {
         this.techniqueId = techniqueId;
     }
 
+    public String getTechniqueName() {
+        return techniqueName;
+    }
+
     public void setTechniqueName(String techniqueName) {
         this.techniqueName = techniqueName;
-    }
-
-    public void setTechniqueDescription(String techniqueDescription) {
-        this.techniqueDescription = techniqueDescription;
-    }
-
-    public void setTechniquePlatforms(String[] techniquePlatforms) {
-        this.techniquePlatforms = techniquePlatforms;
-    }
-
-    public void setTechniqueDomains(String[] techniqueDomains) {
-        this.techniqueDomains = techniqueDomains;
-    }
-
-    public void setTechniqueUrl(String techniqueUrl) {
-        this.techniqueUrl = techniqueUrl;
-    }
-
-    public void setTechniqueTactics(String[] techniqueTactics) {
-        this.techniqueTactics = techniqueTactics;
-    }
-
-    public void setTechniqueDetection(String techniqueDetection) {
-        this.techniqueDetection = techniqueDetection;
-    }
-
-    public void setTechniqueIsSubtechnique(boolean techniqueIsSubtechnique) {
-        this.techniqueIsSubtechnique = techniqueIsSubtechnique;
     }
 
     public String getTechniqueDescription() {
         return techniqueDescription;
     }
 
+    public void setTechniqueDescription(String techniqueDescription) {
+        this.techniqueDescription = techniqueDescription;
+    }
+
     public String[] getTechniquePlatforms() {
         return techniquePlatforms;
+    }
+
+    public void setTechniquePlatforms(String[] techniquePlatforms) {
+        this.techniquePlatforms = techniquePlatforms;
     }
 
     public String[] getTechniqueDomains() {
         return techniqueDomains;
     }
 
+    public void setTechniqueDomains(String[] techniqueDomains) {
+        this.techniqueDomains = techniqueDomains;
+    }
+
     public String getTechniqueUrl() {
         return techniqueUrl;
+    }
+
+    public void setTechniqueUrl(String techniqueUrl) {
+        this.techniqueUrl = techniqueUrl;
     }
 
     public String[] getTechniqueTactics() {
         return techniqueTactics;
     }
 
+    public void setTechniqueTactics(String[] techniqueTactics) {
+        this.techniqueTactics = techniqueTactics;
+    }
+
     public String getTechniqueDetection() {
         return techniqueDetection;
     }
 
-    /**
-     * Checks if the technique is a subtechnique.
-     *
-     * @return True if the technique is a subtechnique, false otherwise.
-     */
-    public void download() throws URISyntaxException {
-        final String[] MITRE_URL = {"https://api.github.com/repos/mitre-attack/attack-stix-data/contents/enterprise-attack/enterprise-attack.json",
-                "https://api.github.com/repos/mitre-attack/attack-stix-data/contents/ics-attack/ics-attack.json",
-                "https://api.github.com/repos/mitre-attack/attack-stix-data/contents/mobile-attack/mobile-attack.json"};
-        final String[] NAME_FILE = {"enterprise-attack.json",
-                "ics-attack.json",
-                "mobile-attack.json"};
-
-        for (int i = 0; i < 3; i++){
-            dataGetter mitreRetriever = new dataGetter(MITRE_URL[i], NAME_FILE[i]);
-            try {
-                mitreRetriever.retrieveData();
-            } catch(Exception e){
-                System.err.println("Cannot download data due to some errors!");
-            }
-        }
+    public void setTechniqueDetection(String techniqueDetection) {
+        this.techniqueDetection = techniqueDetection;
     }
 
-
-
-        public boolean isTechniqueIsSubtechnique() {
+    public boolean isTechniqueIsSubtechnique() {
         return techniqueIsSubtechnique;
     }
-}
 
+    public void setTechniqueIsSubtechnique(boolean techniqueIsSubtechnique) {
+        this.techniqueIsSubtechnique = techniqueIsSubtechnique;
+    }
+
+    /**
+     * Downloads Mitre Attack data.
+     *
+     * @throws URISyntaxException If there is an error in the URI syntax.
+     */
+//    public void downloadData() throws URISyntaxException {
+//        final String MITRE_URL = "https://raw.githubusercontent.com/mitre-attack/attack-stix-data/master/";
+//        final String MITRE_DIRECTORY = "./data/mitre-attack";
+//
+//        // Array of files to download
+//        final String[] MITRE_FILES = {"enterprise-attack/enterprise-attack.json", "mobile-attack/mobile-attack.json",
+//                "ics-attack/ics-attack.json"};
+//
+//        dataGetter mitreDownloader = new dataGetter(MITRE_URL, MITRE_DIRECTORY);
+//        mitreDownloader.downloadData();
+    }
 

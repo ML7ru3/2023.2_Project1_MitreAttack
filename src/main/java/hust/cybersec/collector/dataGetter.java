@@ -16,8 +16,8 @@ import org.json.JSONObject;
 
 public class dataGetter {
 
-    private String URL;
-    private String filename;
+    private final String URL;
+    private final String filename;
 
     public dataGetter(String URL, String filename){
         this.URL = URL;
@@ -25,6 +25,7 @@ public class dataGetter {
     }
 
     public void retrieveData() throws IOException {
+        System.out.println("Retrieving data from " + URL);
         HttpRequest request = HttpRequest.newBuilder()
                 .uri(URI.create(URL))
                 .GET()
@@ -35,6 +36,7 @@ public class dataGetter {
         try {
             HttpResponse<String> response = client.send(request, HttpResponse.BodyHandlers.ofString());
             if (response.statusCode() == 200) {
+                System.out.println("Retrieve data successfully");
                 String responseBody = response.body();
                 JSONObject jsonObject = new JSONObject(responseBody);
                 String downloadUrl = jsonObject.getString("download_url");
@@ -44,11 +46,10 @@ public class dataGetter {
                     System.err.println("oh no");
                 }
             } else {
-                System.err.println("Failed to fetch data. Status code: " + response.statusCode());
+                System.err.println(STR."Failed to fetch data. Status code: \{response.statusCode()}");
             }
         } catch (IOException | InterruptedException e) {
             System.err.println("Failed to fetch data.");
-            e.printStackTrace();
         }
     }
 
@@ -58,46 +59,22 @@ public class dataGetter {
             directoryPath += System.getProperty("file.separator");
         }
 
-
         try (BufferedInputStream in = new BufferedInputStream(new URL(downloadUrl).openStream());
              FileOutputStream fileOutputStream = new FileOutputStream(directoryPath + filename)) {
+            System.out.println("Downloading data...");
             byte dataBuffer[] = new byte[1024];
             int bytesRead;
+
             while ((bytesRead = in.read(dataBuffer, 0, 1024)) != -1) {
                 fileOutputStream.write(dataBuffer, 0, bytesRead);
             }
         } catch (IOException e) {
             System.err.println("Failed to fetch data.");
         }
+
+        System.out.println("Download completed");
+        System.out.println("-----------------------------------------------");
+        System.out.println();
     }
 
-
-//    public static void main(String[] args) {
-//        final String[] MITRE_URL = {"https://api.github.com/repos/mitre-attack/attack-stix-data/contents/enterprise-attack/enterprise-attack.json",
-//                "https://api.github.com/repos/mitre-attack/attack-stix-data/contents/ics-attack/ics-attack.json",
-//                "https://api.github.com/repos/mitre-attack/attack-stix-data/contents/mobile-attack/mobile-attack.json"};
-//        final String[] NAME_FILE = {"enterprise-attack.json",
-//                "ics-attack.json",
-//                "mobile-attack.json"};
-//
-//        for (int i = 0; i < 3; i++){
-//            dataGetter mitreRetriever = new dataGetter(MITRE_URL[i], NAME_FILE[i]);
-//            try {
-//                mitreRetriever.retrieveData();
-//            } catch( Exception e){
-//                e.printStackTrace();
-//            }
-//        }
-//
-//        final String ATOMIC_URL = "https://api.github.com/repos/redcanaryco/atomic-red-team/contents/atomics/Indexes/index.yaml";
-//        final String NAME_FILE = "index.yaml";
-//        dataGetter atomicRetriever = new dataGetter(ATOMIC_URL, NAME_FILE);
-//
-//        try {
-//            atomicRetriever.retrieveData();
-//        } catch (Exception e) {
-//            e.printStackTrace();
-//        }
-//
-//    }
 }

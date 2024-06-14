@@ -4,6 +4,7 @@ import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
 import hust.cybersec.collector.dataGetter;
+import hust.cybersec.conversion.Deserializer;
 
 import java.net.URISyntaxException;
 
@@ -146,14 +147,20 @@ public class MitreAttackFramework {
      * @return True if the technique is a subtechnique, false otherwise.
      */
     public void download() throws URISyntaxException {
-        final String ATOMIC_URL = "https://api.github.com/repos/redcanaryco/atomic-red-team/contents/atomics/Indexes/index.yaml";
-        final String NAME_FILE = "index.yaml";
-        dataGetter atomicRetriever = new dataGetter(ATOMIC_URL, NAME_FILE);
+        final String[] MITRE_URL = {"https://api.github.com/repos/mitre-attack/attack-stix-data/contents/enterprise-attack/enterprise-attack.json",
+                "https://api.github.com/repos/mitre-attack/attack-stix-data/contents/ics-attack/ics-attack.json",
+                "https://api.github.com/repos/mitre-attack/attack-stix-data/contents/mobile-attack/mobile-attack.json"};
+        final String[] NAME_FILE = {"enterprise-attack.json",
+                "ics-attack.json",
+                "mobile-attack.json"};
 
-        try {
-            atomicRetriever.retrieveData();
-        } catch (Exception e) {
-            e.printStackTrace();
+        for (int i = 0; i < 3; i++){
+            dataGetter mitreRetriever = new dataGetter(MITRE_URL[i], NAME_FILE[i]);
+            try {
+                mitreRetriever.retrieveData();
+            } catch(Exception e){
+                System.err.println("Cannot download data due to some errors!");
+            }
         }
     }
 

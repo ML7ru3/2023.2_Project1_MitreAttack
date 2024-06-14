@@ -89,6 +89,8 @@ public class YamlToJsonConverter {
         } catch (IOException e) {
             System.err.println("An error occurred during YAML to JSON conversion.");
         }
+
+        System.out.println("Convert completed!");
     }
 
     public static void main(String[] args) throws IOException {

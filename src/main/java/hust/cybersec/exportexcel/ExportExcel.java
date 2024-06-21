@@ -1,19 +1,16 @@
 package hust.cybersec.exportexcel;
 
-import com.fasterxml.jackson.databind.JsonNode;
-import com.fasterxml.jackson.databind.ObjectMapper;
+import hust.cybersec.conversion.DataProcessing;
 import hust.cybersec.model.AtomicRedTeam;
-import hust.cybersec.model.MitreAttackFramework;
 import org.apache.poi.ss.usermodel.*;
+import org.apache.poi.ss.usermodel.Font;
 import org.apache.poi.ss.util.CellRangeAddress;
 import org.apache.poi.xssf.usermodel.XSSFWorkbook;
 
+import java.awt.*;
+import java.io.File;
 import java.io.IOException;
-import java.nio.file.Files;
-import java.nio.file.Paths;
-import java.util.HashSet;
 import java.util.List;
-import java.util.ArrayList;
 import java.io.FileOutputStream;
 
 public class ExportExcel {
@@ -21,15 +18,12 @@ public class ExportExcel {
             "Technique Platforms", "Technique Domains", "Technique URL", "Technique Tactics", "Technique Detection",
             "Is Subtechnique", "Test #", "Test Name", "Test GUID", "Test Description", "Test Supported Platforms",
             "Test Input Arguments", "Test Executor", "Test Dependency Executor Name", "Test Dependencies"};
-    public static String jsonFilePath = "src/main/java/hust/cybersec/data/atomic-red-team/index.json";
 
-    public static String excelFilePath = "src/main/java/hust/cybersec/data/atomic-red-team/index.xlsx";
+    final String excelFilePath = "src/main/java/hust/cybersec/data/atomic-red-team/index.xlsx";
+    DataProcessing data;
 
-    public static JsonNodeHandler jsonHandler = new JsonNodeHandler();
-
-    public static void main(String[] args) throws IOException {
-        String jsonData = new String(Files.readAllBytes(Paths.get(jsonFilePath)));
-        List<AtomicRedTeam> atomicTests = mapJsonToAtomicTests(jsonData);
+    public void export() throws IOException {
+        data = new DataProcessing();
         Workbook workbook = new XSSFWorkbook();
         Sheet sheet = workbook.createSheet("Atomic Test");
         sheet.setZoom(50);
@@ -43,7 +37,7 @@ public class ExportExcel {
         createHeaderRow(sheet);
         createSubHeaderRow(sheet);
 
-        createDataRows(sheet, atomicTests);
+        createDataRows(sheet, data.getListAtomics());
         autoSizeColumns(sheet);
         hideTechniqueColumns(sheet);
 
@@ -51,53 +45,12 @@ public class ExportExcel {
 
         writeWorkbook(workbook);
         System.out.println("Excel file exported successfully to " + excelFilePath);
+        openfile();
     }
 
-    public static List<AtomicRedTeam> mapJsonToAtomicTests(String jsonData) throws IOException {
-        HashSet<String> testID = new HashSet<>();
-        ObjectMapper objectMapper = new ObjectMapper();
-        JsonNode root = objectMapper.readTree(jsonData);
-        List<AtomicRedTeam> atomicTests = new ArrayList<>();
 
-        for (JsonNode tacticList : root) {
-            for (JsonNode list : tacticList) {
-                JsonNode techniqueNode = list.get("technique");
-                JsonNode atomicTestsNode = list.get("atomic_tests");
 
-                if (!jsonHandler.checkValid(techniqueNode)) {
-                    continue;
-                }
 
-                if (atomicTestsNode != null && atomicTestsNode.isArray()) {
-                    MitreAttackFramework technique = objectMapper.treeToValue(techniqueNode, MitreAttackFramework.class);
-                    int testNumber = 0;
-
-                    for (JsonNode atomicTestNode : atomicTestsNode) {
-                        if (!atomicTestNode.has("auto_generated_guid")) {
-                            continue;
-                        }
-
-                        String testAutoID = atomicTestNode.get("auto_generated_guid").asText();
-
-                        if (testID.contains(testAutoID)) {
-                            continue;
-                        }
-
-                        testID.add(testAutoID);
-                        testNumber++;
-
-                        AtomicRedTeam atomicTest = objectMapper.treeToValue(atomicTestNode, AtomicRedTeam.class);
-                        atomicTest.setTechniqueDetailsFromFramework(technique);
-                        atomicTest.setTestNumber(testNumber);
-
-                        atomicTests.add(atomicTest);
-                    }
-                }
-            }
-        }
-
-        return atomicTests;
-    }
 
 
     public static void createTitleRow(Sheet sheet) {
@@ -398,8 +351,21 @@ public class ExportExcel {
         sheet.setAutoFilter(usedRange);
     }
 
+    private void openfile(){
+        try{
+            File file = new File("src/main/java/hust/cybersec/data/atomic-red-team/index.xlsx");
+            if (file.exists()){
+                Desktop.getDesktop().open(file);
+            }
+            else{
+                System.err.println("Cannot open file " + "src/main/java/hust/cybersec/data/atomic-red-team/index.xlsx");
+            }
+        }catch (Exception e){
+            System.err.println(e.getMessage());
+        }
+    }
 
-    public static void writeWorkbook(Workbook workbook) throws IOException {
+    void writeWorkbook(Workbook workbook) throws IOException {
         try (FileOutputStream outputStream = new FileOutputStream(excelFilePath)) {
             workbook.write(outputStream);
         }

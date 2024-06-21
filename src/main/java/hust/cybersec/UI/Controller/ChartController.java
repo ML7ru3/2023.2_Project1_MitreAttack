@@ -68,26 +68,26 @@ public class ChartController implements Initializable {
         XYChart.Series<String, Number> series2 = new XYChart.Series<>();
 
         Number test = (Number) data.getListAtomics().size();
-        Number uncovered = (Number) (data.getListEnterprises().size() - data.getListAtomics().size()) ;
-
+        Number uncovered = (Number) (data.getListEnterprises().size()); ;
+        System.out.println(test);
 
         series1.setName("Convered");
         series1.getData().add(new XYChart.Data<>("Enterprise Attack", test));
         series1.getData().add(new XYChart.Data<>("Mobile Attack", 0));
-        series1.getData().add(new XYChart.Data<>("Enterprise Attack", 0));
+        series1.getData().add(new XYChart.Data<>("ICS Attack", 0));
 
 
         series2.setName("Uncovered");
         series2.getData().add(new XYChart.Data<>("Enterprise Attack", uncovered));
         series2.getData().add(new XYChart.Data<>("Mobile Attack", data.getListMobiles().size()));
-        series2.getData().add(new XYChart.Data<>("Enterprise Attack", data.getListICSs().size()));
+        series2.getData().add(new XYChart.Data<>("ICS Attack", data.getListICSs().size()));
 
 
         stackedChart.getData().addAll(series1, series2);
     }
 
     public void showChart() throws IOException {
-        final String CHART_FXML =  "src/main/java/hust/cybersec/UI/view/MITRE_ATT&CK_chart.fxml";
+        final String CHART_FXML =  "/fxml/MITRE_ATT&CK_chart.fxml";
         FXMLLoader fxmlLoader = new FXMLLoader();
         fxmlLoader.setLocation(getClass().getResource(CHART_FXML));
         fxmlLoader.setController(this);

@@ -22,7 +22,7 @@ public class Project1 {
     public static void main(String[] args) throws URISyntaxException, IOException {
         DataProcessing data = new DataProcessing();
         ExportExcel exportExcel = new ExportExcel(data);
-        ChartScreen screen = new ChartScreen();
+        ChartScreen screen  = new ChartScreen();
 
         AtomicRedTeam art = new AtomicRedTeam();
         MitreAttackFramework maf = new MitreAttackFramework();

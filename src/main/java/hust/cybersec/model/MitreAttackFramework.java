@@ -157,7 +157,7 @@ public class MitreAttackFramework {
         for (int i = 0; i < 3; i++){
             dataGetter mitreRetriever = new dataGetter(MITRE_URL[i], NAME_FILE[i]);
             try {
-                mitreRetriever.retrieveData();
+                mitreRetriever.retrieveData(false);
             } catch(Exception e){
                 System.err.println("Cannot download data due to some errors!");
             }
@@ -168,6 +168,17 @@ public class MitreAttackFramework {
 
         public boolean isTechniqueIsSubtechnique() {
         return techniqueIsSubtechnique;
+    }
+    public void setTechniqueDetailsFromFramework(MitreAttackFramework technique) {
+        this.setTechniqueId(technique.getTechniqueId());
+        this.setTechniqueName(technique.getTechniqueName());
+        this.setTechniqueDescription(technique.getTechniqueDescription());
+        this.setTechniquePlatforms(technique.getTechniquePlatforms());
+        this.setTechniqueDomains(technique.getTechniqueDomains());
+        this.setTechniqueUrl(technique.getTechniqueUrl());
+        this.setTechniqueTactics(technique.getTechniqueTactics());
+        this.setTechniqueDetection(technique.getTechniqueDetection());
+        this.setTechniqueIsSubtechnique(technique.isTechniqueIsSubtechnique());
     }
 }
 

@@ -148,39 +148,23 @@ public class AtomicRedTeam extends MitreAttackFramework {
      */
 
     public void download() throws URISyntaxException{
-        final String[] MITRE_URL = {"https://api.github.com/repos/mitre-attack/attack-stix-data/contents/enterprise-attack/enterprise-attack.json",
-                "https://api.github.com/repos/mitre-attack/attack-stix-data/contents/ics-attack/ics-attack.json",
-                "https://api.github.com/repos/mitre-attack/attack-stix-data/contents/mobile-attack/mobile-attack.json"};
-        final String[] NAME_FILE = {"enterprise-attack.json",
-                "ics-attack.json",
-                "mobile-attack.json"};
+        final String ATOMIC_URL = "https://api.github.com/repos/redcanaryco/atomic-red-team/contents/atomics/Indexes/index.yaml";
+        final String NAME_FILE = "index.yaml";
+        dataGetter atomicRetriever = new dataGetter(ATOMIC_URL, NAME_FILE);
 
-        for (int i = 0; i < 3; i++){
-            dataGetter mitreRetriever = new dataGetter(MITRE_URL[i], NAME_FILE[i]);
-            try {
-                mitreRetriever.retrieveData();
-            } catch( Exception e){
-                e.printStackTrace();
-            }
+        try {
+            atomicRetriever.retrieveData(true);
+        } catch (Exception e) {
+            e.printStackTrace();
         }
 
-        String YAML_FILE_PATH = "src/main/java/hust/cybersec/data/index.yaml";
-        String JSON_FILE_PATH = "src/main/java/hust/cybersec/data/index.json";
+        String YAML_FILE_PATH = "src/main/java/hust/cybersec/data/atomic-red-team/index.yaml";
+        String JSON_FILE_PATH = "src/main/java/hust/cybersec/data/atomic-red-team/index.json";
 
         YamlToJsonConverter converter = new YamlToJsonConverter(YAML_FILE_PATH, JSON_FILE_PATH);
         converter.convert();
 
     }
 
-    public void setTechniqueDetailsFromFramework(MitreAttackFramework technique) {
-        this.setTechniqueId(technique.getTechniqueId());
-        this.setTechniqueName(technique.getTechniqueName());
-        this.setTechniqueDescription(technique.getTechniqueDescription());
-        this.setTechniquePlatforms(technique.getTechniquePlatforms());
-        this.setTechniqueDomains(technique.getTechniqueDomains());
-        this.setTechniqueUrl(technique.getTechniqueUrl());
-        this.setTechniqueTactics(technique.getTechniqueTactics());
-        this.setTechniqueDetection(technique.getTechniqueDetection());
-        this.setTechniqueIsSubtechnique(technique.isTechniqueIsSubtechnique());
-    }
+
 }

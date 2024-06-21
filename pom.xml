@@ -89,6 +89,11 @@
             <artifactId>jetty-util-ajax</artifactId>
             <version>9.4.46.v20220331</version>
         </dependency>
+        <dependency>
+            <groupId>antlr</groupId>
+            <artifactId>antlr</artifactId>
+            <version>2.7.7</version>
+        </dependency>
     </dependencies>
 
     <build>

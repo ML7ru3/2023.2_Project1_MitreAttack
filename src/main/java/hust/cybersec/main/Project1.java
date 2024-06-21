@@ -1,55 +1,60 @@
 package hust.cybersec.main;
 
+import hust.cybersec.exportexcel.ExportExcel;
 import hust.cybersec.model.AtomicRedTeam;
 import hust.cybersec.model.MitreAttackFramework;
-import org.apache.poi.ss.formula.functions.Mirr;
 
-import java.io.IOException;
-import java.net.URI;
 import java.net.URISyntaxException;
 import java.util.Scanner;
 
 public class Project1 {
 
+    public static ExportExcel exportExcel = new ExportExcel();
     public static void main(String[] args) throws URISyntaxException {
         AtomicRedTeam art = new AtomicRedTeam();
         MitreAttackFramework maf = new MitreAttackFramework();
 
-        try{
-            art.download();
-            maf.download();
-        }catch (URISyntaxException e) {
-            e.getMessage();
-        }
+//        try{
+//            art.download();
+//            maf.download();
+//        }catch (URISyntaxException e) {
+//            e.getMessage();
+//        }
 
 
         Scanner inp = new Scanner(System.in);
         int input;
         mainScreen();
         input = inp.nextInt();
-        switch (input){
+
+        switch (input) {
             case 1:
-                try{
+                try {
                     art.download();
                     maf.download();
-                }catch (URISyntaxException e) {
+                } catch (URISyntaxException e) {
                     e.getMessage();
                 }
                 mainScreen();
                 break;
             case 2:
-                mainScreen();
+                try {
+                    exportExcel.export();
+                } catch (Exception e) {
+                    System.err.println("There's an error while exporting data to excel");
+                    e.printStackTrace();
+                }
                 break;
             case 3:
-                mainScreen();
                 break;
             case 4:
                 inp.close();
                 return;
             default:
-                System.out.println("Invalid input! Please try again");
+                System.err.println("Invalid input! Please try again");
                 mainScreen();
         }
+
     }
 
     static void mainScreen(){

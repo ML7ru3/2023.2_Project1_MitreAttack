@@ -24,7 +24,7 @@ public class dataGetter {
         this.filename = filename;
     }
 
-    public void retrieveData() throws IOException {
+    public void retrieveData(boolean atomic) throws IOException {
         System.out.println("Retrieving data from " + URL);
         HttpRequest request = HttpRequest.newBuilder()
                 .uri(URI.create(URL))
@@ -41,7 +41,7 @@ public class dataGetter {
                 JSONObject jsonObject = new JSONObject(responseBody);
                 String downloadUrl = jsonObject.getString("download_url");
                 try {
-                    downloadData(downloadUrl);
+                    downloadData(downloadUrl, atomic);
                 } catch (IOException e) {
                     System.err.println("oh no");
                 }
@@ -53,8 +53,13 @@ public class dataGetter {
         }
     }
 
-    public void downloadData(String downloadUrl) throws IOException {
+    public void downloadData(String downloadUrl, boolean atomic) throws IOException {
         String directoryPath = "src/main/java/hust/cybersec/data/";
+
+        if (atomic) directoryPath += "atomic-red-team/";
+        else directoryPath += "mitre-attack-framework";
+
+
         if (!directoryPath.endsWith("/") && !directoryPath.endsWith("\\")) {
             directoryPath += System.getProperty("file.separator");
         }

@@ -171,4 +171,16 @@ public class AtomicRedTeam extends MitreAttackFramework {
         converter.convert();
 
     }
+
+    public void setTechniqueDetailsFromFramework(MitreAttackFramework technique) {
+        this.setTechniqueId(technique.getTechniqueId());
+        this.setTechniqueName(technique.getTechniqueName());
+        this.setTechniqueDescription(technique.getTechniqueDescription());
+        this.setTechniquePlatforms(technique.getTechniquePlatforms());
+        this.setTechniqueDomains(technique.getTechniqueDomains());
+        this.setTechniqueUrl(technique.getTechniqueUrl());
+        this.setTechniqueTactics(technique.getTechniqueTactics());
+        this.setTechniqueDetection(technique.getTechniqueDetection());
+        this.setTechniqueIsSubtechnique(technique.isTechniqueIsSubtechnique());
+    }
 }

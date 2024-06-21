@@ -1,16 +1,29 @@
 package hust.cybersec.main;
 
+import hust.cybersec.UI.Controller.ChartController;
+import hust.cybersec.UI.Controller.ChartScreen;
+import hust.cybersec.UI.Controller.ScreenController;
+import hust.cybersec.conversion.DataProcessing;
 import hust.cybersec.exportexcel.ExportExcel;
 import hust.cybersec.model.AtomicRedTeam;
 import hust.cybersec.model.MitreAttackFramework;
+import javafx.application.Application;
+import javafx.fxml.FXMLLoader;
+import javafx.scene.Parent;
+import javafx.scene.Scene;
+import javafx.stage.Stage;
 
+import java.io.IOException;
 import java.net.URISyntaxException;
 import java.util.Scanner;
 
 public class Project1 {
 
-    public static ExportExcel exportExcel = new ExportExcel();
-    public static void main(String[] args) throws URISyntaxException {
+    public static void main(String[] args) throws URISyntaxException, IOException {
+        DataProcessing data = new DataProcessing();
+        ExportExcel exportExcel = new ExportExcel(data);
+        ChartScreen screen = new ChartScreen();
+
         AtomicRedTeam art = new AtomicRedTeam();
         MitreAttackFramework maf = new MitreAttackFramework();
 
@@ -46,6 +59,7 @@ public class Project1 {
                 }
                 break;
             case 3:
+                screen.launchScreen();
                 break;
             case 4:
                 inp.close();

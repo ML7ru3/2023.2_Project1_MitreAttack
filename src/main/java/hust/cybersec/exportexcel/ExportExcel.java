@@ -20,7 +20,11 @@ public class ExportExcel {
             "Test Input Arguments", "Test Executor", "Test Dependency Executor Name", "Test Dependencies"};
 
     final String excelFilePath = "src/main/java/hust/cybersec/data/atomic-red-team/index.xlsx";
-    DataProcessing data;
+    private DataProcessing data;
+
+    public ExportExcel(DataProcessing data) {
+        this.data = data;
+    }
 
     public void export() throws IOException {
         data = new DataProcessing();

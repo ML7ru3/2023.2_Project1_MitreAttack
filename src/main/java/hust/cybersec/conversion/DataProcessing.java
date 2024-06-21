@@ -22,6 +22,19 @@ public class DataProcessing {
     private List<MitreAttackFramework> listMobiles, listICSs, listEnterprises;
     final JsonNodeHandler jsonHandler = new JsonNodeHandler();
 
+
+//    /*
+//    This is for counting tests in the following: atomic-red-team, moibile attack, enterprise attack and ics attack
+//    The reason why it's 2D because 2 dimension represents TACTICS and PLATFORMS, the value inside contain the number of technique that:
+//        Do the following tactic
+//        and In that platform
+//     */
+//
+//    private int[][] numberOfAtomicTest;
+//    private int[][] numberOfMobileTest;
+//    private int[][] numberOfEnterpriseTest;
+//    private int[][] numberOfICSTest;
+
     public DataProcessing() throws IOException {
         //Mapping all json files to JsonNode
         this.listAtomics = mapAtomicTests();

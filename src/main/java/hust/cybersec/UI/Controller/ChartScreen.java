@@ -12,8 +12,8 @@ public class ChartScreen extends Application {
     @Override
     public void start(Stage primaryStage) throws Exception {
         data = new DataProcessing();
-        final String SCREEN_FXML_FILE_PATH = "src/main/java/hust/cybersec/UI/view/MITRE_ATT&CK_chart.fxml";
-        FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource(SCREEN_FXML_FILE_PATH));
+        final String SCREEN_FXML_FILE_PATH = "/fxml/MITRE_ATT&CK_chart.fxml";
+        FXMLLoader fxmlLoader = new FXMLLoader(ChartScreen.class.getResource(SCREEN_FXML_FILE_PATH));
         ChartController chartController = new ChartController(data);
         fxmlLoader.setController(chartController);
         Parent root = fxmlLoader.load();

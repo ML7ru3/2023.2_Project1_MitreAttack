@@ -22,6 +22,10 @@ public class DataProcessing {
     private List<MitreAttackFramework> listMobiles, listICSs, listEnterprises;
     final JsonNodeHandler jsonHandler = new JsonNodeHandler();
 
+
+    //This contain all attack that atomics has tested.
+    private HashSet<String> allTest = new HashSet<>();
+
 //    /*
 //    This is for counting tests in the following: atomic-red-team, moibile attack, enterprise attack and ics attack
 //    The reason why it's 2D because 2 dimension represents TACTICS and PLATFORMS, the value inside contain the number of technique that:
@@ -75,6 +79,8 @@ public class DataProcessing {
                 JsonNode techniqueNode = list.get("technique");
                 JsonNode atomicTestsNode = list.get("atomic_tests");
 
+                if (techniqueNode.get("id") != null) allTest.add(techniqueNode.get("id").asText());
+
                 if (!jsonHandler.checkValid(techniqueNode)) {
                     continue;
                 }
@@ -127,4 +133,7 @@ public class DataProcessing {
         return listEnterprises;
     }
 
+    public HashSet<String> getAllTest() {
+        return allTest;
+    }
 }

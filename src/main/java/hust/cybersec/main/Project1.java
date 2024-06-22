@@ -48,14 +48,13 @@ public class Project1 {
                 } catch (URISyntaxException e) {
                     e.getMessage();
                 }
-                mainScreen();
+                System.out.println("Download completed!");
                 break;
             case 2:
                 try {
                     exportExcel.export();
                 } catch (Exception e) {
                     System.err.println("There's an error while exporting data to excel");
-                    e.printStackTrace();
                 }
                 break;
             case 3:

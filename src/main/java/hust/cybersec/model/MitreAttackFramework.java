@@ -45,19 +45,7 @@ public class MitreAttackFramework {
 
     }
 
-    /**
-     * Constructor for the MitreAttackFramework class.
-     *
-     * @param techniqueId             The ID of the technique.
-     * @param techniqueName           The name of the technique.
-     * @param techniqueDescription    The description of the technique.
-     * @param techniquePlatforms      The platforms associated with the technique.
-     * @param techniqueDomains        The domains associated with the technique.
-     * @param techniqueUrl            The URL of the technique.
-     * @param techniqueTactics        The tactics associated with the technique.
-     * @param techniqueDetection      The detection information for the technique.
-     * @param techniqueIsSubtechnique Indicates if the technique is a subtechnique.
-     */
+
     public MitreAttackFramework(String techniqueId, String techniqueName, String techniqueDescription,
                                 String[] techniquePlatforms, String[] techniqueDomains, String techniqueUrl, String[] techniqueTactics,
                                 String techniqueDetection, boolean techniqueIsSubtechnique) {
@@ -141,11 +129,6 @@ public class MitreAttackFramework {
         return techniqueDetection;
     }
 
-    /**
-     * Checks if the technique is a subtechnique.
-     *
-     * @return True if the technique is a subtechnique, false otherwise.
-     */
     public void download() throws URISyntaxException {
         final String[] MITRE_URL = {"https://api.github.com/repos/mitre-attack/attack-stix-data/contents/enterprise-attack/enterprise-attack.json",
                 "https://api.github.com/repos/mitre-attack/attack-stix-data/contents/ics-attack/ics-attack.json",

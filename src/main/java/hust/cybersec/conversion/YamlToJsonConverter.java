@@ -17,12 +17,7 @@ public class YamlToJsonConverter {
     private final ObjectMapper yamlMapper;
     private final ObjectMapper jsonMapper;
 
-    /**
-     * Initializes the converter with file paths for input and output.
-     *
-     * @param yamlFilePath Path to the input YAML file
-     * @param jsonFilePath Path to the output JSON file
-     */
+
     public YamlToJsonConverter(String yamlFilePath, String jsonFilePath) {
         this.yamlFilePath = yamlFilePath;
         this.jsonFilePath = jsonFilePath;
@@ -38,12 +33,7 @@ public class YamlToJsonConverter {
     }
 
 
-    /**
-     * Reads the entire YAML file into a byte array.
-     *
-     * @return Byte array containing the YAML file's data.
-     * @throws IOException if there are issues reading the file.
-     */
+
     private byte[] readYamlFile() throws IOException {
         Path path = Path.of(yamlFilePath).normalize();
         if (!Files.isRegularFile(path)) {
@@ -52,12 +42,7 @@ public class YamlToJsonConverter {
         return Files.readAllBytes(path);
     }
 
-    /**
-     * Converts the YAML data to a JSON object.
-     *
-     * @param yamlBytes Raw YAML data.
-     * @return Converted JSON object.
-     */
+
     private Object convertYamlToJson(byte[] yamlBytes) {
         try {
             return yamlMapper.readValue(yamlBytes, Object.class);
@@ -67,12 +52,7 @@ public class YamlToJsonConverter {
         }
     }
 
-    /**
-     * Writes the JSON object to a file.
-     *
-     * @param json Object to write.
-     * @throws IOException if there are issues writing the file.
-     */
+
     private void writeJsonToFile(Object json) throws IOException {
         try (OutputStream out = new FileOutputStream(jsonFilePath);
              BufferedOutputStream bufferedOut = new BufferedOutputStream(out)) {
@@ -93,9 +73,6 @@ public class YamlToJsonConverter {
         System.out.println("Convert completed!");
     }
 
-    public static void main(String[] args) throws IOException {
-
-    }
 }
 
 

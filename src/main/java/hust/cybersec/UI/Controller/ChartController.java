@@ -67,8 +67,8 @@ public class ChartController implements Initializable {
         XYChart.Series<String, Number> series1 = new XYChart.Series<>();
         XYChart.Series<String, Number> series2 = new XYChart.Series<>();
 
-        Number test = (Number) data.getListAtomics().size();
-        Number uncovered = (Number) (data.getListEnterprises().size()); ;
+        Number test = (Number) data.getAllTest().size();
+        Number uncovered = (Number) (data.getListEnterprises().size() - data.getAllTest().size()); ;
         System.out.println(test);
 
         series1.setName("Convered");

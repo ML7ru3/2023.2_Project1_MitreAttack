@@ -1,8 +1,6 @@
 package hust.cybersec.collector;
 
 
-import com.fasterxml.jackson.databind.util.JSONPObject;
-
 import java.io.IOException;
 import java.io.*;
 import java.net.URI;
@@ -11,7 +9,6 @@ import java.net.http.HttpClient;
 import java.net.http.HttpRequest;
 import java.net.http.HttpResponse;
 
-import hust.cybersec.conversion.YamlToJsonConverter;
 import org.json.JSONObject;
 
 public class dataGetter {

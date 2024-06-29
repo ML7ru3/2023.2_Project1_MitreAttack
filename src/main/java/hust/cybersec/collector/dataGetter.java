@@ -1,8 +1,6 @@
 package hust.cybersec.collector;
 
 
-import com.fasterxml.jackson.databind.util.JSONPObject;
-
 import java.io.IOException;
 import java.io.*;
 import java.net.URI;
@@ -11,7 +9,6 @@ import java.net.http.HttpClient;
 import java.net.http.HttpRequest;
 import java.net.http.HttpResponse;
 
-import hust.cybersec.conversion.YamlToJsonConverter;
 import org.json.JSONObject;
 
 public class dataGetter {
@@ -24,8 +21,10 @@ public class dataGetter {
         this.filename = filename;
     }
 
+    private long startTime, endTime, elapsedTime;
+
     public void retrieveData(boolean atomic) throws IOException {
-        System.out.println("Retrieving data from " + URL);
+        startTime = System.currentTimeMillis();
         HttpRequest request = HttpRequest.newBuilder()
                 .uri(URI.create(URL))
                 .GET()
@@ -36,7 +35,6 @@ public class dataGetter {
         try {
             HttpResponse<String> response = client.send(request, HttpResponse.BodyHandlers.ofString());
             if (response.statusCode() == 200) {
-                System.out.println("Retrieve data successfully");
                 String responseBody = response.body();
                 JSONObject jsonObject = new JSONObject(responseBody);
                 String downloadUrl = jsonObject.getString("download_url");
@@ -66,7 +64,6 @@ public class dataGetter {
 
         try (BufferedInputStream in = new BufferedInputStream(new URL(downloadUrl).openStream());
              FileOutputStream fileOutputStream = new FileOutputStream(directoryPath + filename)) {
-            System.out.println("Downloading data...");
             byte dataBuffer[] = new byte[1024];
             int bytesRead;
 
@@ -76,10 +73,12 @@ public class dataGetter {
         } catch (IOException e) {
             System.err.println("Failed to fetch data.");
         }
-
-        System.out.println("Download completed");
-        System.out.println("-----------------------------------------------");
-        System.out.println();
+        endTime = System.currentTimeMillis();
+        elapsedTime = endTime - startTime;
     }
 
+
+    public String  getElapsedTime() {
+        return ((double) elapsedTime / 1000) + "s";
+    }
 }

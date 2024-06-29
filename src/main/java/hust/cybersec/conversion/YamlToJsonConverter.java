@@ -60,7 +60,6 @@ public class YamlToJsonConverter {
         }
     }
     public void convert() {
-        System.out.println("Converting index.yaml to index.json");
 
         try {
             byte[] yamlBytes = readYamlFile();
@@ -70,7 +69,7 @@ public class YamlToJsonConverter {
             System.err.println("An error occurred during YAML to JSON conversion.");
         }
 
-        System.out.println("Convert completed!");
+
     }
 
 }

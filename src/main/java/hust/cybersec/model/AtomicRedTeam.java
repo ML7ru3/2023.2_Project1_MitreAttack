@@ -2,7 +2,9 @@ package hust.cybersec.model;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
 import hust.cybersec.collector.dataGetter;
+import hust.cybersec.controller.DownloadingController;
 import hust.cybersec.conversion.YamlToJsonConverter;
+import javafx.application.Platform;
 
 import java.net.URISyntaxException;
 
@@ -13,6 +15,7 @@ import java.net.URISyntaxException;
  */
 public class AtomicRedTeam extends MitreAttackFramework {
     private int testNumber;
+
 
     @JsonProperty("name")
     private String testName;
@@ -112,22 +115,34 @@ public class AtomicRedTeam extends MitreAttackFramework {
         return testDependencies;
     }
 
-    public void download() throws URISyntaxException{
+    public void download(DownloadingController downloadingController) throws URISyntaxException{
         final String ATOMIC_URL = "https://api.github.com/repos/redcanaryco/atomic-red-team/contents/atomics/Indexes/index.yaml";
         final String NAME_FILE = "index.yaml";
         dataGetter atomicRetriever = new dataGetter(ATOMIC_URL, NAME_FILE);
 
+        Platform.runLater(() -> {
+            downloadingController.setLabel("Downloading Atomic Test Cases...");
+        });
         try {
             atomicRetriever.retrieveData(true);
         } catch (Exception e) {
             e.printStackTrace();
         }
 
+        Platform.runLater(() -> {
+            downloadingController.setLabel("Atomic Test Cases Downloaded in " + atomicRetriever.getElapsedTime() +"!");
+        });
         String YAML_FILE_PATH = "src/main/java/hust/cybersec/data/atomic-red-team/index.yaml";
         String JSON_FILE_PATH = "src/main/java/hust/cybersec/data/atomic-red-team/index.json";
 
         YamlToJsonConverter converter = new YamlToJsonConverter(YAML_FILE_PATH, JSON_FILE_PATH);
+        Platform.runLater(() -> {
+            downloadingController.setLabel("Converting file to json file type...");
+        });
         converter.convert();
+        Platform.runLater(() -> {
+            downloadingController.setLabel("Convert completed!\n");
+        });
 
     }
 

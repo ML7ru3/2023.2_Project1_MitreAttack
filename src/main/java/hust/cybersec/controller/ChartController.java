@@ -18,7 +18,7 @@ import java.util.Arrays;
 import java.util.ResourceBundle;
 
 public class ChartController implements Initializable {
-    private DataProcessing data;
+    private static DataProcessing data;
 
     @FXML
     private StackedBarChart<String, Number> stackedChart;
@@ -87,5 +87,23 @@ public class ChartController implements Initializable {
         stackedChart.getData().addAll(series1, series2);
     }
 
+
+    public void showChart() throws IOException {
+        final String SCREEN_FXML_FILE_PATH = "/View/Chart.fxml";
+        FXMLLoader fxmlLoader = new FXMLLoader();
+
+        URL location = ChartController.class.getResource(SCREEN_FXML_FILE_PATH);
+        fxmlLoader.setLocation(location);
+
+        ChartController chartController = new ChartController(data);
+        fxmlLoader.setController(chartController);
+        Parent root = fxmlLoader.load();
+
+        Scene scene = new Scene(root);
+        Stage primaryStage = new Stage();
+        primaryStage.setTitle("ATOMIC ANALYZER");
+        primaryStage.setScene(scene);
+        primaryStage.show();
+    }
 
 }

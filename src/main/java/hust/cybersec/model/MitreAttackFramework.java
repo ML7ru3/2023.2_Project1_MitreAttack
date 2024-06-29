@@ -4,7 +4,9 @@ import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
 import hust.cybersec.collector.dataGetter;
+import hust.cybersec.controller.DownloadingController;
 import hust.cybersec.conversion.Deserializer;
+import javafx.application.Platform;
 
 import java.net.URISyntaxException;
 
@@ -129,7 +131,7 @@ public class MitreAttackFramework {
         return techniqueDetection;
     }
 
-    public void download() throws URISyntaxException {
+    public void download(DownloadingController downloadingController) throws URISyntaxException {
         final String[] MITRE_URL = {"https://api.github.com/repos/mitre-attack/attack-stix-data/contents/enterprise-attack/enterprise-attack.json",
                 "https://api.github.com/repos/mitre-attack/attack-stix-data/contents/ics-attack/ics-attack.json",
                 "https://api.github.com/repos/mitre-attack/attack-stix-data/contents/mobile-attack/mobile-attack.json"};
@@ -140,7 +142,15 @@ public class MitreAttackFramework {
         for (int i = 0; i < 3; i++){
             dataGetter mitreRetriever = new dataGetter(MITRE_URL[i], NAME_FILE[i]);
             try {
+                int finalI1 = i;
+                Platform.runLater(() -> {
+                    downloadingController.setLabel(NAME_FILE[finalI1] + " downloading..");
+                });
                 mitreRetriever.retrieveData(false);
+                int finalI = i;
+                Platform.runLater(() -> {
+                    downloadingController.setLabel(NAME_FILE[finalI] + " downloaded in " + mitreRetriever.getElapsedTime() + "!\n");
+                });
             } catch(Exception e){
                 System.err.println("Cannot download data due to some errors!");
             }

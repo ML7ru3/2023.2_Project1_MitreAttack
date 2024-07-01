@@ -5,38 +5,32 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.node.ArrayNode;
 import hust.cybersec.model.AtomicRedTeam;
 import hust.cybersec.model.MitreAttackFramework;
+import org.json.JSONArray;
 
 import java.io.IOException;
+import java.lang.reflect.Array;
 import java.nio.file.Files;
 import java.nio.file.Paths;
-import java.util.ArrayList;
-import java.util.HashSet;
-import java.util.List;
+import java.util.*;
 
 import static hust.cybersec.data.Constant.*;
 
 public class DataProcessing {
 
 
-    private List<AtomicRedTeam> listAtomics;
-    private List<MitreAttackFramework> listMobiles, listICSs, listEnterprises;
+    private final List<AtomicRedTeam> listAtomics;
+    private final List<MitreAttackFramework> listMobiles, listICSs, listEnterprises;
     final JsonNodeHandler jsonHandler = new JsonNodeHandler();
 
 
-    //This contain all attack that atomics has tested.
-    private HashSet<String> allTest = new HashSet<>();
+    //This contains all attack that atomics has tested.
+    private final HashSet<String> allCoveredTest = new HashSet<>();
 
-//    /*
-//    This is for counting tests in the following: atomic-red-team, moibile attack, enterprise attack and ics attack
-//    The reason why it's 2D because 2 dimension represents TACTICS and PLATFORMS, the value inside contain the number of technique that:
-//        Do the following tactic
-//        and In that platform
-//     */
-//
-//    private int[][] numberOfAtomicTest;
-//    private int[][] numberOfMobileTest;
-//    private int[][] numberOfEnterpriseTest;
-//    private int[][] numberOfICSTest;
+    private final Map<String, Integer> platforms = new HashMap<>();
+    private final Map<String, Integer> coveredPlatforms = new HashMap<>();
+
+    private final Map<String, Integer> tactics = new HashMap<>();
+    private final Map<String, Integer> coveredTactics = new HashMap<>();
 
     public DataProcessing() throws IOException {
         //Mapping all json files to JsonNode
@@ -77,15 +71,22 @@ public class DataProcessing {
         for (JsonNode tacticList : root) {
             for (JsonNode list : tacticList) {
                 JsonNode techniqueNode = list.get("technique");
-                JsonNode atomicTestsNode = list.get("atomic_tests");
-
-                if (techniqueNode.get("id") != null) allTest.add(techniqueNode.get("id").asText());
-
+                ArrayNode atomicTestsNode = (ArrayNode) list.get("atomic_tests");
+                //check valid
                 if (!jsonHandler.checkValid(techniqueNode)) {
                     continue;
                 }
 
+                //get all platform that in atomic test (enterprise)
+                getEssentialData(techniqueNode, platforms, tactics);
+
                 if (atomicTestsNode != null && atomicTestsNode.isArray()) {
+                    //check if this technique is tested by atomic red team
+                    if (!atomicTestsNode.isEmpty()) {
+                        //This is covered test
+                        allCoveredTest.add(techniqueNode.get("id").asText());
+                        getEssentialData(techniqueNode, coveredPlatforms, coveredTactics);
+                    }
                     MitreAttackFramework technique = objectMapper.treeToValue(techniqueNode, MitreAttackFramework.class);
                     int testNumber = 0;
 
@@ -116,6 +117,20 @@ public class DataProcessing {
         return atomicTests;
     }
 
+    private void getEssentialData(JsonNode techniqueNode, Map<String, Integer> coveredPlatforms, Map<String, Integer> coveredTactics) {
+        for (JsonNode node : techniqueNode.get("x_mitre_platforms")){
+            coveredPlatforms.put(node.asText(), coveredPlatforms.getOrDefault(node.asText(), 0) + 1);
+        }
+
+        ArrayNode killChainPhases = (ArrayNode) techniqueNode.get("kill_chain_phases");
+        if (killChainPhases.isEmpty()) return;
+        for (JsonNode tactic : killChainPhases){
+            coveredTactics.put(tactic.get("phase_name").asText(), coveredTactics.getOrDefault(tactic.get("phase_name").asText(), 0) + 1);
+        }
+
+
+    }
+
 
     public List<AtomicRedTeam> getListAtomics() {
         return listAtomics;
@@ -133,7 +148,23 @@ public class DataProcessing {
         return listEnterprises;
     }
 
-    public HashSet<String> getAllTest() {
-        return allTest;
+    public Map<String, Integer> getPlatforms() {
+        return platforms;
+    }
+
+    public Map<String, Integer> getCoveredPlatforms() {
+        return coveredPlatforms;
+    }
+
+    public HashSet<String> getAllCoveredTest() {
+        return allCoveredTest;
+    }
+
+    public Map<String, Integer> getTactics() {
+        return tactics;
+    }
+
+    public Map<String, Integer> getCoveredTactics() {
+        return coveredTactics;
     }
 }

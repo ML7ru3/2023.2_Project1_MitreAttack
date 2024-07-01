@@ -2,7 +2,7 @@ package hust.cybersec.controller;
 
 
 import hust.cybersec.conversion.DataProcessing;
-import hust.cybersec.exportexcel.ExportExcel;
+import hust.cybersec.excel.ExportExcel;
 import hust.cybersec.model.AtomicRedTeam;
 import hust.cybersec.model.MitreAttackFramework;
 import javafx.application.Platform;
@@ -24,7 +24,7 @@ import java.util.ResourceBundle;
 
 public class ScreenController implements Initializable {
 
-    DataProcessing data;
+    private DataProcessing data;
     ExportExcel excelExporter;
     DownloadingController downloadingController;
     ChartController chartController;
@@ -104,6 +104,7 @@ public class ScreenController implements Initializable {
     }
 
 
+
     @Override
     public void initialize(URL location, ResourceBundle resources) {
         chartController = new ChartController(data);
@@ -116,6 +117,7 @@ public class ScreenController implements Initializable {
         downloadingController = new DownloadingController();
         art = new AtomicRedTeam();
         maf = new MitreAttackFramework();
+
 
     }
 
@@ -132,6 +134,7 @@ public class ScreenController implements Initializable {
         primaryStage.setScene(scene);
         primaryStage.setTitle("Project 1");
         primaryStage.show();
+
     }
 
 }

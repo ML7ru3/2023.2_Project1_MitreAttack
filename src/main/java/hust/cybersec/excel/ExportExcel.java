@@ -1,4 +1,4 @@
-package hust.cybersec.exportexcel;
+package hust.cybersec.excel;
 
 import hust.cybersec.conversion.DataProcessing;
 import hust.cybersec.model.AtomicRedTeam;

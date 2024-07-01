@@ -17,10 +17,7 @@ import javafx.util.Duration;
 
 import java.io.IOException;
 import java.net.URL;
-import java.util.Arrays;
-import java.util.HashMap;
-import java.util.Iterator;
-import java.util.ResourceBundle;
+import java.util.*;
 
 public class ChartController extends ScreenController implements Initializable {
     private static DataProcessing data;
@@ -126,8 +123,7 @@ public class ChartController extends ScreenController implements Initializable {
         XYChart.Series<String, Number> series2 = new XYChart.Series<>();
 
         Number test = (Number) data.getAllCoveredTest().size();
-        Number uncovered = (Number) (data.getListEnterprises().size() - data.getAllCoveredTest().size()); ;
-        System.out.println(test);
+        Number uncovered = (Number) (data.getListEnterprises().size() - data.getAllCoveredTest().size());
 
         series1.setName("Covered");
         series1.getData().add(new XYChart.Data<>("Enterprise Attack", test));
@@ -179,9 +175,10 @@ public class ChartController extends ScreenController implements Initializable {
                 total = data.getPlatforms().get(dataChart.getXValue());
             } else if (data.getTactics().containsKey(dataChart.getXValue())) {
                 total = data.getTactics().get(dataChart.getXValue());
-            } else {
+            } else if (dataChart.getXValue().equals("Enterprise Attack")) {
                 total = data.getListEnterprises().size();
             }
+            else total = dataChart.getYValue().intValue();
 
             double coverage = dataChart.getYValue().doubleValue() / total * 100; // Convert to double here
             Tooltip tooltip = new Tooltip("Value: " + dataChart.getYValue() + "\nCOVERAGE RATIO: " + String.format("%.2f", coverage) + "%");
@@ -195,9 +192,10 @@ public class ChartController extends ScreenController implements Initializable {
                 total = data.getPlatforms().get(dataChart.getXValue());
             } else if (data.getTactics().containsKey(dataChart.getXValue())) {
                 total = data.getTactics().get(dataChart.getXValue());
-            } else {
+            } else if (dataChart.getXValue().equals("Enterprise Attack")) {
                 total = data.getListEnterprises().size();
             }
+            else total = dataChart.getYValue().intValue();
 
             double coverage = dataChart.getYValue().doubleValue() / total * 100; // Convert to double here
             Tooltip tooltip = new Tooltip("Value: " + dataChart.getYValue() + "\nCOVERAGE RATIO: " + String.format("%.2f", coverage) + "%");

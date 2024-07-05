@@ -24,5 +24,5 @@ A project for Project 1 course
 - Package ['main.java.hust.cybersec.data]
 - Package ['main.java.hust.cybersec.excel]
 - Package ['main.java.hust.cybersec.model]
-- 'README.md' and Presentation creator
+- 'README.md' and Presentation designer
 - Report writer
